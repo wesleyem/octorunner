@@ -1,24 +1,48 @@
 FROM ubuntu:24.04
 
+# Set ARGs with defaults
 ARG RUNNER_VERSION="2.321.0"
-
 ARG DEBIAN_FRONTEND=noninteractive
 
-RUN apt update -y && apt upgrade -y && useradd -m docker
-RUN apt install -y --no-install-recommends \
-    curl jq build-essential libssl-dev libffi-dev python3 python3-venv python3-dev python3-pip
+# Set environment variables to reduce warnings
+ENV PATH="/home/docker/actions-runner/bin:$PATH"
 
+# Update and install system dependencies
+RUN apt update -y && apt upgrade -y && \
+    apt install -y --no-install-recommends \
+    curl \
+    jq \
+    build-essential \
+    libssl-dev \
+    libffi-dev \
+    python3 \
+    python3-venv \
+    python3-dev \
+    python3-pip && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
 
-RUN cd /home/docker && mkdir actions-runner && cd actions-runner \
-    && curl -O -L https://github.com/actions/runner/releases/download/v${RUNNER_VERSION}/actions-runner-linux-x64-${RUNNER_VERSION}.tar.gz \
-    && tar xzf ./actions-runner-linux-x64-${RUNNER_VERSION}.tar.gz
+# Create docker user and directories
+RUN useradd -m docker && mkdir -p /home/docker/actions-runner
 
-RUN chown -R docker ~docker && /home/docker/actions-runner/bin/installdependencies.sh
+# Download and extract GitHub Actions runner
+WORKDIR /home/docker/actions-runner
+RUN curl -O -L https://github.com/actions/runner/releases/download/v${RUNNER_VERSION}/actions-runner-linux-x64-${RUNNER_VERSION}.tar.gz && \
+    tar xzf ./actions-runner-linux-x64-${RUNNER_VERSION}.tar.gz && \
+    rm -f ./actions-runner-linux-x64-${RUNNER_VERSION}.tar.gz
 
-COPY start.sh start.sh
+# Install dependencies for the GitHub Actions runner
+RUN /home/docker/actions-runner/bin/installdependencies.sh
 
-RUN chmod +x start.sh
+# Set permissions for the docker user
+RUN chown -R docker:docker /home/docker
 
+# Copy the entrypoint script
+COPY start.sh /home/docker/start.sh
+RUN chmod +x /home/docker/start.sh
+
+# Switch to the docker user
 USER docker
+WORKDIR /home/docker/actions-runner
 
+# Set entrypoint
 ENTRYPOINT ["./start.sh"]
