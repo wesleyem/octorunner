@@ -40,8 +40,6 @@ RUN /home/docker/actions-runner/bin/installdependencies.sh
 # Set permissions for the docker user
 RUN chown -R docker:docker /home/docker
 
-CMD [ "service", "docker", "start" ]
-
 # Copy the entrypoint script
 COPY start.sh /home/docker/start.sh
 RUN chmod +x /home/docker/start.sh
