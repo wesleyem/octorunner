@@ -19,11 +19,14 @@ RUN apt-get update -y && \
     python3-venv \
     python3-dev \
     python3-pip \
+    docker.io \
     libicu-dev && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Create docker user and directories
-RUN useradd -m docker && mkdir -p /home/docker/actions-runner
+RUN useradd -m -g docker docker && mkdir -p /home/docker/actions-runner
+
+RUN usermod -aG docker docker
 
 # Download and extract GitHub Actions runner
 WORKDIR /home/docker/actions-runner
