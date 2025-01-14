@@ -1,4 +1,4 @@
-FROM debian:bookworm-slim
+FROM ubuntu:24.04
 
 # Set ARGs with defaults
 ARG RUNNER_VERSION="2.321.0"
@@ -43,6 +43,9 @@ RUN chown -R docker:docker /home/docker
 # Copy the entrypoint script
 COPY start.sh /home/docker/start.sh
 RUN chmod +x /home/docker/start.sh
+
+RUN systemctl enable docker.service
+RUN systemctl enable containerd.service
 
 # Switch to the docker user
 USER docker
