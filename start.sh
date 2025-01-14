@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# dockerd &
+dockerd &
 
 TIMEOUT=10
 SECONDS=0
