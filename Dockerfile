@@ -19,6 +19,7 @@ RUN apt update -y && apt upgrade -y && \
     python3-venv \
     python3-dev \
     python3-pip && \
+    libicu-dev && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Create docker user and directories
