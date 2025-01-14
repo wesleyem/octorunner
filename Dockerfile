@@ -22,7 +22,7 @@ RUN apt-get update -y && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Create a non-root user and home directory for the runner
-RUN useradd -m docker && mkdir -p /home/docker/actions-runner && chown -R docker:docker /home/docker
+RUN useradd -m -g docker docker && mkdir -p /home/docker/actions-runner && chown -R docker:docker /home/docker
 
 # Download and install GitHub Actions runner
 WORKDIR /home/docker/actions-runner
