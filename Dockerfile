@@ -1,4 +1,4 @@
-FROM ubuntu:24.04
+FROM debian:bookworm-slim
 
 # Set ARGs with defaults
 ARG RUNNER_VERSION="2.321.0"
@@ -8,7 +8,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 ENV PATH="/home/docker/actions-runner/bin:$PATH"
 
 # Update and install system dependencies
-RUN apt-get update -y && apt-get upgrade -y && \
+RUN apt-get update -y && \
     apt-get install -y --no-install-recommends \
     curl \
     jq \
