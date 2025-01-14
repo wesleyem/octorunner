@@ -45,4 +45,4 @@ USER docker
 WORKDIR /home/docker/actions-runner
 
 # Set entrypoint
-ENTRYPOINT ["./start.sh"]
+ENTRYPOINT ["/home/docker/start.sh"]
