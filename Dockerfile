@@ -8,8 +8,8 @@ ARG DEBIAN_FRONTEND=noninteractive
 ENV PATH="/home/docker/actions-runner/bin:$PATH"
 
 # Update and install system dependencies
-RUN apt update -y && apt upgrade -y && \
-    apt install -y --no-install-recommends \
+RUN apt-get update -y && apt-get upgrade -y && \
+    apt-get install -y --no-install-recommends \
     curl \
     jq \
     build-essential \
@@ -18,7 +18,7 @@ RUN apt update -y && apt upgrade -y && \
     python3 \
     python3-venv \
     python3-dev \
-    python3-pip && \
+    python3-pip \
     libicu-dev && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
