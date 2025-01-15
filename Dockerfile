@@ -23,7 +23,9 @@ RUN apt-get update -y && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Create a non-root user and home directory for the runner
-RUN useradd -m -g docker docker && mkdir -p /home/docker/{actions-runner,.ssh} && chown -R docker:docker /home/docker
+RUN useradd -m -g docker docker && \
+    mkdir -p /home/docker/actions-runner /home/docker/.ssh && \
+    chown -R docker:docker /home/docker
 
 # Download and install GitHub Actions runner
 WORKDIR /home/docker/actions-runner
@@ -38,7 +40,8 @@ FROM deps AS main
 
 # Copy the start script and adjust permissions
 COPY start.sh /home/docker/start.sh
-RUN chmod +x /home/docker/start.sh && chown docker:docker /home/docker/start.sh
+RUN chmod +x /home/docker/start.sh && \
+    chown docker:docker /home/docker/start.sh
 
 # Set non-root user and working directory
 USER docker
