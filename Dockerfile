@@ -18,6 +18,7 @@ RUN apt-get update -y && \
     python3-dev \
     python3-pip \
     docker.io \
+    openssh-client \
     libicu-dev && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
