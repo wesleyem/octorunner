@@ -1,4 +1,4 @@
-FROM ubuntu:24.04
+FROM ubuntu:24.04 AS deps
 
 ARG RUNNER_VERSION="2.321.0"
 ARG DEBIAN_FRONTEND=noninteractive
@@ -32,6 +32,8 @@ RUN curl -O -L https://github.com/actions/runner/releases/download/v${RUNNER_VER
 
 # Install runner dependencies
 RUN ./bin/installdependencies.sh
+
+FROM deps AS main
 
 # Copy the start script and adjust permissions
 COPY start.sh /home/docker/start.sh
