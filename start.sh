@@ -1,5 +1,22 @@
 #!/bin/bash
 
+# Start the Docker daemon without sudo (as root)
+dockerd &
+
+# Wait for Docker to be ready
+TIMEOUT=10
+SECONDS=0
+while ! docker info > /dev/null 2>&1; do
+    echo "Waiting for Docker to start..."
+    sleep 1
+    if [ $SECONDS -ge $TIMEOUT ]; then
+        echo "Docker failed to start within $TIMEOUT seconds."
+        exit 1
+    fi
+done
+
+echo "Docker is running!"
+
 if [ -z "$REPO" ] || [ -z "$TOKEN" ]; then
     echo "Error: REPO and TOKEN environment variables must be set."
     exit 1
