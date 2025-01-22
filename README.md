@@ -35,7 +35,9 @@ docker run -d \
 ```
 
 - `REPO`: The full name of your GitHub repository (e.g., `username/repository`).
-- `TOKEN`: Your GitHub Personal Access Token with `repo` and `workflow` scopes.
+- `TOKEN`: Your GitHub Personal Access Token with
+  - `Read access to metadata`
+  - and `Read and Write access to administration`
 
 ### Stop the Runner
 
